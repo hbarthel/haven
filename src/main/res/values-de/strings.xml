@@ -6,7 +6,10 @@
     <string name="accelerometer_prompt">Empfindlichkeit Bewegung</string>
     <string name="microphone_sensitivity">Empfindlichkeit Geräusche</string>
     <string name="timer_delay_label">Verzögerungszeit setzen</string>
-    <string name="remote_notification_label">"Bei Alarm SMS oder Signal Nachricht senden "</string>
+
+    <string name="config_email_notification_active_label">Bei Alarm E-Mail senden</string>
+
+    <string name="remote_notification_label">Bei Alarm Signal-Nachricht senden (defekt)</string>
     <string name="sms_hint">+4917712345678</string>
     <string name="camera_prompt">Kamera wählen</string>
     <string name="secure_service_started">Haven aktiviert</string>
@@ -61,7 +64,7 @@
     <string name="cancel">Abbruch</string>
     <string name="register_title">Bei Signal registrieren</string>
     <string name="register_signal_desc">Geben Sie eine Telefonnummer ein, mit der Sie sich bei Signal registrieren und sichere Benachrichtigungen senden können. Sie können die Telefonnummer dieses Geräts verwenden oder eine virtuelle Nummer einrichten.
-\n 
+\n
 \nWARNUNG: Wenn diese Nummer bereits mit einer Signal-App-Installation gekoppelt ist, wird sie dort nicht mehr funktionieren und nur noch innerhalb von Haven funktionieren.</string>
     <string name="phone_hint">+4917712345678</string>
     <string name="menu_licenses">Lizenzen…</string>
@@ -120,7 +123,7 @@
     <string name="reset_configuration_question">Signal-Konfiguration zurücksetzen\?</string>
     <string name="run_disk_cleanup">Gelöschte Protokolle vom Gerät entfernen</string>
     <string name="sms_dialog_summary">Entfernte Rufnummer zum Senden von Benachrichtigungen</string>
-    <string name="sms_dialog_message">Geben Sie eine entfernte Telefonnummer ein, um Benachrichtigungen dort hinzusenden</string>
+    <string name="sms_dialog_message">Geben Sie eine entfernte Telefonnummer ein, um Benachrichtigungen dort hinzusenden (mehrere mittels Komma trennen)</string>
     <string name="send_message_dialog">Geben Sie eine Telefonnummer ein, um eine Testalarmmeldung zu senden</string>
     <string name="send_text_message">Testmeldungen …</string>
     <string name="phone_number">Meldungsnummer (Entfernt)</string>

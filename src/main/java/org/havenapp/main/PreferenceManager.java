@@ -36,20 +36,19 @@ import java.util.Objects;
 
 
 public class PreferenceManager {
-	
+
     private SharedPreferences appSharedPrefs;
     private Editor prefsEditor;
-    
+
     public static final String LOW = "Low";
     public static final String MEDIUM = "Medium";
     public static final String HIGH = "High";
     public static final String OFF = "Off";
 
-
     public static final String FRONT = "Front";
     public static final String BACK = "Back";
     public static final String NONE = "None";
-	
+
     private static final String APP_SHARED_PREFS="org.havenapp.main";
     private static final String ACCELEROMETER_ACTIVE="accelerometer_active";
     private static final String ACCELEROMETER_SENSITIVITY="accelerometer_sensibility";
@@ -71,10 +70,10 @@ public class PreferenceManager {
     public static final String VOICE_VERIFY_SIGNAL = "voice_verify_signal";
     public static final String RESET_SIGNAL_CONFIG = "reset_signal_config";
     private static final String UNLOCK_CODE="unlock_code";
-	
+
     private static final String ACCESS_TOKEN="access_token";
     private static final String DELEGATED_ACCESS_TOKEN="deferred_access_token";
-	
+
     private static final String PHONE_ID="phone_id";
     private static final String TIMER_DELAY="timer_delay";
     private static final String VIDEO_LENGTH="video_length";
@@ -99,12 +98,20 @@ public class PreferenceManager {
     public static final String CONFIG_BASE_STORAGE = "config_base_storage";
     private static final String CONFIG_BASE_STORAGE_DEFAULT = "/haven";
 
+    // added by hbarthel (please be aware that only SMTPS (SMTP with TLS) port 465 is supported, STARTTLS is not safe enough)
+    public static final String EMAIL_NOTIFICATION_ACTIVE = "config_email_notification_active";
+    public static final String EMAIL_RECIPIENT = "config_email_recipient";
+    public static final String EMAIL_SENDER = "config_email_sender";
+    public static final String EMAIL_SERVER = "config_email_server";
+    public static final String EMAIL_ACCOUNT = "config_email_account";
+    public static final String EMAIL_PASSWORD = "config_email_password";
+
     // keeping the key value same for data migration.
     static final String REMOTE_PHONE_NUMBER = "sms_number";
     static final String REMOTE_NOTIFICATION_ACTIVE = "remote_notification_active";
 
     private Context context;
-	
+
     public PreferenceManager(Context context) {
         this.context = context;
         this.appSharedPrefs = context.getSharedPreferences(APP_SHARED_PREFS, AppCompatActivity.MODE_PRIVATE);
@@ -136,8 +143,7 @@ public class PreferenceManager {
         return appSharedPrefs.getString(SIGNAL_USERNAME,null);
     }
 
-    public void setSignalUsername (String signalUsername)
-    {
+    public void setSignalUsername (String signalUsername) {
         prefsEditor.putString(SIGNAL_USERNAME,signalUsername);
         prefsEditor.commit();
     }
@@ -166,7 +172,7 @@ public class PreferenceManager {
      * Checks if Signal is registered and verified for the Signal username returned by
      * {@link #getSignalUsername()}
      *
-     * @return true iff registered Signal username is same as that of the verified one.
+     * @return true if registered Signal username is same as that of the verified one.
      */
     public boolean isSignalVerified() {
         return !TextUtils.isEmpty(getSignalUsername()) &&
@@ -212,21 +218,21 @@ public class PreferenceManager {
     }
 
     public void activateAccelerometer(boolean active) {
-    	prefsEditor.putBoolean(ACCELEROMETER_ACTIVE, active);
-    	prefsEditor.commit();
+        prefsEditor.putBoolean(ACCELEROMETER_ACTIVE, active);
+        prefsEditor.commit();
     }
-    
+
     public boolean getAccelerometerActivation() {
-    	return appSharedPrefs.getBoolean(ACCELEROMETER_ACTIVE, true);
+        return appSharedPrefs.getBoolean(ACCELEROMETER_ACTIVE, true);
     }
-    
+
     public void setAccelerometerSensitivity(String sensitivity) {
-    	prefsEditor.putString(ACCELEROMETER_SENSITIVITY, sensitivity);
-    	prefsEditor.commit();
+        prefsEditor.putString(ACCELEROMETER_SENSITIVITY, sensitivity);
+        prefsEditor.commit();
     }
-    
+
     public String getAccelerometerSensitivity() {
-    	return appSharedPrefs.getString(ACCELEROMETER_SENSITIVITY, HIGH);
+        return appSharedPrefs.getString(ACCELEROMETER_SENSITIVITY, HIGH);
     }
 
     public void setActivateVideoMonitoring(boolean active) {
@@ -239,57 +245,57 @@ public class PreferenceManager {
     }
 
     public void activateCamera(boolean active) {
-    	prefsEditor.putBoolean(CAMERA_ACTIVE, active);
-    	prefsEditor.commit();
+        prefsEditor.putBoolean(CAMERA_ACTIVE, active);
+        prefsEditor.commit();
     }
-    
+
     public boolean getCameraActivation() {
-    	return appSharedPrefs.getBoolean(CAMERA_ACTIVE, true);
+        return appSharedPrefs.getBoolean(CAMERA_ACTIVE, true);
     }
-    
+
     public void setCamera(String camera) {
-    	prefsEditor.putString(CAMERA, camera);
-    	prefsEditor.commit();
+        prefsEditor.putString(CAMERA, camera);
+        prefsEditor.commit();
     }
-    
+
     public String getCamera() {
-    	return appSharedPrefs.getString(CAMERA, FRONT);
+        return appSharedPrefs.getString(CAMERA, FRONT);
     }
-    
+
     public void setCameraSensitivity(int sensitivity) {
-    	prefsEditor.putInt(CAMERA_SENSITIVITY, sensitivity);
-    	prefsEditor.commit();
+        prefsEditor.putInt(CAMERA_SENSITIVITY, sensitivity);
+        prefsEditor.commit();
     }
-    
+
     public int getCameraSensitivity() {
-    	return appSharedPrefs.getInt(CAMERA_SENSITIVITY, LuminanceMotionDetector.MOTION_MEDIUM);
+        return appSharedPrefs.getInt(CAMERA_SENSITIVITY, LuminanceMotionDetector.MOTION_MEDIUM);
     }
-    
+
     public void activateFlash(boolean active) {
-    	prefsEditor.putBoolean(FLASH_ACTIVE, active);
-    	prefsEditor.commit();
+        prefsEditor.putBoolean(FLASH_ACTIVE, active);
+        prefsEditor.commit();
     }
-    
+
     public boolean getFlashActivation() {
-    	return appSharedPrefs.getBoolean(FLASH_ACTIVE, false);
+        return appSharedPrefs.getBoolean(FLASH_ACTIVE, false);
     }
-    
+
     public void activateMicrophone(boolean active) {
-    	prefsEditor.putBoolean(MICROPHONE_ACTIVE, active);
-    	prefsEditor.commit();
+        prefsEditor.putBoolean(MICROPHONE_ACTIVE, active);
+        prefsEditor.commit();
     }
-    
+
     public boolean getMicrophoneActivation() {
-    	return appSharedPrefs.getBoolean(MICROPHONE_ACTIVE, true);
+        return appSharedPrefs.getBoolean(MICROPHONE_ACTIVE, true);
     }
-    
+
     public void setMicrophoneSensitivity(String sensitivity) {
-    	prefsEditor.putString(MICROPHONE_SENSITIVITY, sensitivity);
-    	prefsEditor.commit();
+        prefsEditor.putString(MICROPHONE_SENSITIVITY, sensitivity);
+        prefsEditor.commit();
     }
-    
+
     public String getMicrophoneSensitivity() {
-    	return appSharedPrefs.getString(MICROPHONE_SENSITIVITY, MEDIUM);
+        return appSharedPrefs.getString(MICROPHONE_SENSITIVITY, MEDIUM);
     }
 
     public void setRemoteNotificationActive(boolean isRemoteNotificationActive) {
@@ -316,8 +322,7 @@ public class PreferenceManager {
         return appSharedPrefs.getInt(TIMER_DELAY,30);
     }
 
-    public void setTimerDelay (int delay)
-    {
+    public void setTimerDelay (int delay) {
         prefsEditor.putInt(TIMER_DELAY,delay);
         prefsEditor.commit();
     }
@@ -327,8 +332,7 @@ public class PreferenceManager {
         return appSharedPrefs.getInt(VIDEO_LENGTH,30);
     }
 
-    public void setMonitoringTime (int delay)
-    {
+    public void setMonitoringTime (int delay) {
         prefsEditor.putInt(VIDEO_LENGTH,delay);
         prefsEditor.commit();
     }
@@ -343,9 +347,9 @@ public class PreferenceManager {
     }
 
     public String getDirPath() {
-    	return DIR_PATH;
+        return DIR_PATH;
     }
-    
+
     public String getSMSText() {
         return context.getString(R.string.intrusion_detected);
     }
@@ -363,8 +367,7 @@ public class PreferenceManager {
         return appSharedPrefs.getString(CONFIG_BASE_STORAGE,CONFIG_BASE_STORAGE_DEFAULT) + File.separator + getCurrentSession(); //phoneypot is the old code name for Haven
     }
 
-    public void setDefaultMediaStoragePath (String path)
-    {
+    public void setDefaultMediaStoragePath (String path) {
         prefsEditor.putString(CONFIG_BASE_STORAGE,path);
         prefsEditor.commit();
     }
@@ -378,7 +381,7 @@ public class PreferenceManager {
         return appSharedPrefs.getInt(NOTIFICATION_TIME,-1); //time in minutes times by seconds
     }
 
-    public void setNotificationTimeMs (int notificationTimeMs) {
+    public void setNotificationTimeMs(int notificationTimeMs) {
         prefsEditor.putInt(NOTIFICATION_TIME,notificationTimeMs);
         prefsEditor.commit();
     }
@@ -388,7 +391,7 @@ public class PreferenceManager {
         prefsEditor.commit();
     }
 
-    public void setHeartbeatMonitorNotifications (int notificationTimeMs) {
+    public void setHeartbeatMonitorNotifications(int notificationTimeMs) {
         prefsEditor.putInt(HEARTBEAT_MONITOR_DELAY,notificationTimeMs);
         prefsEditor.commit();
     }
@@ -397,18 +400,16 @@ public class PreferenceManager {
         return appSharedPrefs.getBoolean(HEARTBEAT_MONITOR_ACTIVE, false);
     }
 
-    public int getHeartbeatNotificationTimeMs () {
+    public int getHeartbeatNotificationTimeMs() {
         return appSharedPrefs.getInt(HEARTBEAT_MONITOR_DELAY,300000);
     }
 
-    public String getHeartbeatMonitorMessage ()
-    {
+    public String getHeartbeatMonitorMessage() {
         return appSharedPrefs.getString(HEARTBEAT_MONITOR_MESSAGE,null);
     }
 
-    public void setHeartbeatMonitorMessage (String hearbeatMessage)
-    {
-        prefsEditor.putString(HEARTBEAT_MONITOR_MESSAGE, hearbeatMessage);
+    public void setHeartbeatMonitorMessage(String heartbeatMessage) {
+        prefsEditor.putString(HEARTBEAT_MONITOR_MESSAGE, heartbeatMessage);
         prefsEditor.commit();
     }
 
@@ -419,7 +420,6 @@ public class PreferenceManager {
     public String getHeartbeatSuffix() {
         return context.getString(R.string.hearbeat_monitor_initial_message_2);
     }
-
 
     /**
      * Set the {@link org.havenapp.main.model.Event#startTime} for the ongoing event.
@@ -442,5 +442,59 @@ public class PreferenceManager {
      */
     private String getCurrentSession() {
         return appSharedPrefs.getString(CURRENT_EVENT_START_TIME, "unknown_session");
+    }
+
+    public void setEmailNotificationActive(boolean emailNotificationActive) {
+        prefsEditor.putBoolean(EMAIL_NOTIFICATION_ACTIVE, emailNotificationActive);
+        prefsEditor.apply();
+    }
+
+    public boolean isEmailNotificationActive() {
+        return appSharedPrefs.getBoolean(EMAIL_NOTIFICATION_ACTIVE, false);
+    }
+
+    public void setEmailAccount(String emailAccount) {
+        prefsEditor.putString(EMAIL_ACCOUNT, emailAccount);
+        prefsEditor.commit();
+    }
+
+    public String getEmailAccount() {
+        return appSharedPrefs.getString(EMAIL_ACCOUNT, "");
+    }
+
+    public void setEmailPassword(String emailPassword) {
+        prefsEditor.putString(EMAIL_PASSWORD, emailPassword);
+        prefsEditor.commit();
+    }
+
+    public String getEmailPassword() {
+        return appSharedPrefs.getString(EMAIL_PASSWORD, "");
+    }
+
+    public void setEmailServer(String emailServer) {
+        prefsEditor.putString(EMAIL_SERVER, emailServer);
+        prefsEditor.commit();
+    }
+
+    public String getEmailServer() {
+        return appSharedPrefs.getString(EMAIL_SERVER, "");
+    }
+
+    public void setEmailSender(String emailSender) {
+        prefsEditor.putString(EMAIL_SENDER, emailSender);
+        prefsEditor.commit();
+    }
+
+    public String getEmailSender() {
+        return appSharedPrefs.getString(EMAIL_SENDER, "");
+    }
+
+    public void setEmailRecipient(String emailRecipient) {
+        prefsEditor.putString(EMAIL_RECIPIENT, emailRecipient);
+        prefsEditor.commit();
+    }
+
+    public String getEmailRecipient() {
+        return appSharedPrefs.getString(EMAIL_RECIPIENT, "");
     }
 }

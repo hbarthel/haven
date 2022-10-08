@@ -75,6 +75,57 @@
         <SwitchPreference
             app:iconSpaceReserved="false"
             android:defaultValue="false"
+            android:key="config_email_notification_active"
+            android:title="@string/config_email_notification_active_label" />
+
+        <EditTextPreference
+            app:iconSpaceReserved="false"
+            android:dialogLayout="@layout/pref_dialog_edit_text"
+            android:dialogMessage="@string/config_email_recipient_message"
+            android:inputType="textEmailAddress"
+            android:key="config_email_recipient"
+            android:summary="@string/config_email_recipient_summary"
+            android:title="@string/config_email_recipient_label" />
+
+        <EditTextPreference
+            app:iconSpaceReserved="false"
+            android:dialogLayout="@layout/pref_dialog_edit_text"
+            android:dialogMessage="@string/config_email_sender_message"
+            android:inputType="textEmailAddress"
+            android:key="config_email_sender"
+            android:summary="@string/config_email_sender_summary"
+            android:title="@string/config_email_sender_label" />
+
+        <EditTextPreference
+            app:iconSpaceReserved="false"
+            android:dialogLayout="@layout/pref_dialog_edit_text"
+            android:dialogMessage="@string/config_email_server_message"
+            android:inputType="text"
+            android:key="config_email_server"
+            android:summary="@string/config_email_server_summary"
+            android:title="@string/config_email_server_label" />
+
+        <EditTextPreference
+            app:iconSpaceReserved="false"
+            android:dialogLayout="@layout/pref_dialog_edit_text"
+            android:dialogMessage="@string/config_email_account_message"
+            android:inputType="text"
+            android:key="config_email_account"
+            android:summary="@string/config_email_account_summary"
+            android:title="@string/config_email_account_label" />
+
+        <EditTextPreference
+            app:iconSpaceReserved="false"
+            android:dialogLayout="@layout/pref_dialog_edit_password"
+            android:dialogMessage="@string/config_email_password_message"
+            android:inputType="textPassword"
+            android:key="config_email_password"
+            android:summary="@string/config_email_password_summary"
+            android:title="@string/config_email_password_label" />
+
+        <SwitchPreference
+            app:iconSpaceReserved="false"
+            android:defaultValue="false"
             android:key="remote_notification_active"
             android:title="@string/remote_notification_label" />
 

@@ -8,9 +8,25 @@
     <string name="accelerometer_prompt">Movement Sensitivity</string>
     <string name="microphone_sensitivity">Sound Sensitivity</string>
     <string name="timer_delay_label">Set Delay Time</string>
-    <string name="remote_notification_label">
-    	Send Signal message alerts
-    </string>
+
+    <string name="config_email_notification_active_label">Send e-mail notifications</string>
+    <string name="config_email_recipient_label">Recipient e-mail address</string>
+    <string name="config_email_recipient_message">Please enter the e-mail address where notifications should arrive</string>
+    <string name="config_email_recipient_summary">E-mails will be sent to this address</string>
+    <string name="config_email_sender_label">Sender e-mail address</string>
+    <string name="config_email_sender_message">Please enter an e-mail address that will appear in the FROM field (some mail servers expect an address matching to the account)</string>
+    <string name="config_email_sender_summary">E-mails will be sent from this address</string>
+    <string name="config_email_server_label">Mail server</string>
+    <string name="config_email_server_message">Please enter the hostname of the SMTPS mail server supporting port 465</string>
+    <string name="config_email_server_summary">Address of SMPTS mail server</string>
+    <string name="config_email_account_label">Mail account</string>
+    <string name="config_email_account_message">Enter the mail account login (may be different from sender email, depends on your provider)</string>
+    <string name="config_email_account_summary">Account for mail server login</string>
+    <string name="config_email_password_label">Mail account password</string>
+    <string name="config_email_password_message">Enter the mail account password</string>
+    <string name="config_email_password_summary">Password for mail server login</string>
+
+    <string name="remote_notification_label">Send Signal notifications (broken)</string>
     <string name="sms_hint">+12125551212</string>
     <string name="camera_prompt">Select the camera</string>
     <string name="secure_service_started">Haven Activated</string>
@@ -91,7 +107,7 @@
     <!--Preference Settings -->
     <string name="hint_number" translatable="false">+12125551212</string>
     <string name="sms_dialog_summary">Remote phone number to send notifications to</string>
-    <string name="sms_dialog_message">Enter a remote phone number to send alert notifications to</string>
+    <string name="sms_dialog_message">Enter a remote phone number to send alert notifications to (separate multiple numbers with a comma)</string>
     <string name="signal_dialog_summary">A phone number to send from using Signal</string>
     <string name="verification_dialog_summary">Tap to verify your Signal number</string>
     <string name="verification_dialog_summary_verified">Signal number verified</string>

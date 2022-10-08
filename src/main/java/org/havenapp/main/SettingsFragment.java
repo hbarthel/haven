@@ -50,7 +50,6 @@ import java.util.Locale;
 
 import info.guardianproject.netcipher.proxy.OrbotHelper;
 
-
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener, TimePickerDialog.OnTimeSetListener {
 
     private PreferenceManager preferences;
@@ -65,7 +64,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         setHasOptionsMenu(true);
         app = (HavenApp) mActivity.getApplication();
 
-
         /*
          * We create an application directory to store images and audio
          */
@@ -73,7 +71,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         directory.mkdirs();
 
         if (preferences.getCameraActivation()) {
-
             String camera = preferences.getCamera();
             switch (camera) {
                 case PreferenceManager.FRONT:
@@ -86,28 +83,34 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                     ((ListPreference) findPreference(PreferenceManager.CAMERA)).setValueIndex(2);
                     break;
             }
-
         }
+
+        SwitchPreference emailSwitchPreference =
+                (SwitchPreference) findPreference(PreferenceManager.EMAIL_NOTIFICATION_ACTIVE);
+        emailSwitchPreference.setChecked(preferences.isEmailNotificationActive());
+        emailSwitchPreference.setOnPreferenceChangeListener((preference, newValue) -> {
+            boolean enabled = (Boolean) newValue;
+            preferences.setEmailNotificationActive(enabled);
+            emailSwitchPreference.setChecked(enabled);
+            return false;
+        });
 
         SwitchPreference switchPreference =
                 (SwitchPreference) findPreference(PreferenceManager.REMOTE_NOTIFICATION_ACTIVE);
-
         switchPreference.setChecked(preferences.isRemoteNotificationActive());
-
         switchPreference.setOnPreferenceChangeListener((preference, newValue) -> {
-                    // user wants to enable/disable remote notification
+            // user wants to enable/disable remote notification
+            boolean enabled = (Boolean) newValue;
 
-                    boolean enabled = (Boolean) newValue;
+            if (enabled && !canSendRemoteNotification()) {
+                collectDataForRemoteNotification();
+            }
 
-                    if (enabled && !canSendRemoteNotification()) {
-                        collectDataForRemoteNotification();
-                    }
+            preferences.setRemoteNotificationActive(enabled && canSendRemoteNotification());
+            switchPreference.setChecked(enabled && canSendRemoteNotification());
 
-                    preferences.setRemoteNotificationActive(enabled && canSendRemoteNotification());
-                    switchPreference.setChecked(enabled && canSendRemoteNotification());
-
-                    return false;
-                });
+            return false;
+        });
 
         findPreference(PreferenceManager.REMOTE_PHONE_NUMBER).setOnPreferenceClickListener(preference -> {
             if (preferences.getRemotePhoneNumber().isEmpty()) {
@@ -155,8 +158,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             findPreference(PreferenceManager.REGISTER_SIGNAL).setSummary(R.string.register_signal_desc);
         }
 
-        if (preferences.getNotificationTimeMs()>0)
-        {
+        if (preferences.getNotificationTimeMs()>0) {
             findPreference(PreferenceManager.NOTIFICATION_TIME).setSummary(preferences.getNotificationTimeMs()/60000 + " " + getString(R.string.minutes));
         }
 
@@ -165,23 +167,20 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             return true;
         });
 
-        if (preferences.getHeartbeatActive())
-        {
+        if (preferences.getHeartbeatActive()) {
             ((SwitchPreference) findPreference(PreferenceManager.HEARTBEAT_MONITOR_ACTIVE)).setChecked(true);
             if (preferences.getHeartbeatActive()) {
                 findPreference(PreferenceManager.HEARTBEAT_MONITOR_DELAY).setSummary(preferences.getHeartbeatNotificationTimeMs() / 60000 + " " + getString(R.string.minutes));
-            }
-            else
+            } else {
                 findPreference(PreferenceManager.HEARTBEAT_MONITOR_DELAY).setSummary(R.string.heartbeat_time_dialog);
+            }
         }
 
-        if (preferences.getHeartbeatNotificationTimeMs()> 300000)
-        {
+        if (preferences.getHeartbeatNotificationTimeMs()> 300000) {
             findPreference(PreferenceManager.HEARTBEAT_MONITOR_DELAY).setSummary(preferences.getHeartbeatNotificationTimeMs() / 60000 + " " + getString(R.string.minutes));
         }
 
-        if (preferences.getHeartbeatMonitorMessage() == null)
-        {
+        if (preferences.getHeartbeatMonitorMessage() == null) {
             findPreference(PreferenceManager.HEARTBEAT_MONITOR_MESSAGE).setSummary(R.string.hearbeat_message_summary);
         } else {
             findPreference(PreferenceManager.HEARTBEAT_MONITOR_MESSAGE).setSummary(R.string.hearbeat_message_summary_on);
@@ -227,7 +226,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         checkSignalUsernameVerification();
         ((EditTextPreference) findPreference(PreferenceManager.VERIFY_SIGNAL)).setText("");
         askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, 1);
-
     }
 
     private void showResetSignalDialog() {
@@ -364,9 +362,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             case 2:
                 askForPermission(Manifest.permission.RECORD_AUDIO, 3);
                 break;
-
         }
-
     }
 
     @Override
@@ -386,6 +382,31 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         switch (key) {
+            case PreferenceManager.EMAIL_RECIPIENT: {
+                String text = ((EditTextPreference) findPreference(PreferenceManager.EMAIL_RECIPIENT)).getText();
+                preferences.setEmailRecipient(text);
+                break;
+            }
+            case PreferenceManager.EMAIL_SENDER:{
+                String text = ((EditTextPreference) findPreference(PreferenceManager.EMAIL_SENDER)).getText();
+                preferences.setEmailSender(text);
+                break;
+            }
+            case PreferenceManager.EMAIL_SERVER:{
+                String text = ((EditTextPreference) findPreference(PreferenceManager.EMAIL_SERVER)).getText();
+                preferences.setEmailServer(text);
+                break;
+            }
+            case PreferenceManager.EMAIL_ACCOUNT:{
+                String text = ((EditTextPreference) findPreference(PreferenceManager.EMAIL_ACCOUNT)).getText();
+                preferences.setEmailAccount(text);
+                break;
+            }
+            case PreferenceManager.EMAIL_PASSWORD:{
+                String text = ((EditTextPreference) findPreference(PreferenceManager.EMAIL_PASSWORD)).getText();
+                preferences.setEmailPassword(text);
+                break;
+            }
             case PreferenceManager.CAMERA:
                 switch (Integer.parseInt(((ListPreference) findPreference(PreferenceManager.CAMERA)).getValue())) {
                     case 0:
@@ -450,19 +471,14 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 }
                 break;
             case PreferenceManager.NOTIFICATION_TIME:
-                try
-                {
+                try {
                     String text = ((EditTextPreference)findPreference(PreferenceManager.NOTIFICATION_TIME)).getText();
                     int notificationTimeMs = Integer.parseInt(text)*60000;
                     preferences.setNotificationTimeMs(notificationTimeMs);
                     findPreference(PreferenceManager.NOTIFICATION_TIME).setSummary(preferences.getNotificationTimeMs()/60000 + " " + getString(R.string.minutes));
-
-                }
-                catch (NumberFormatException ne)
-                {
+                } catch (NumberFormatException ne) {
                     //error parsing user value
                 }
-
                 break;
             case PreferenceManager.REMOTE_ACCESS_ONION: {
                 EditTextPreference preference = findPreference(PreferenceManager.REMOTE_ACCESS_ONION);
@@ -514,8 +530,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 try {
                     String text = ((EditTextPreference) findPreference(PreferenceManager.HEARTBEAT_MONITOR_DELAY)).getText();
                     int notificationTimeMs = Integer.parseInt(text) * 60000;
-                    if (notificationTimeMs <= 0)
+                    if (notificationTimeMs <= 0) {
                         notificationTimeMs = 300000;
+                    }
 
                     preferences.setHeartbeatMonitorNotifications(notificationTimeMs);
                     findPreference(PreferenceManager.HEARTBEAT_MONITOR_DELAY).setSummary(preferences.getHeartbeatNotificationTimeMs() / 60000 + " " + getString(R.string.minutes));
@@ -537,8 +554,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 if (checkValidString(text)) {
                     preferences.setHeartbeatMonitorMessage(text);
                     findPreference(PreferenceManager.HEARTBEAT_MONITOR_MESSAGE).setSummary(R.string.hearbeat_message_summary_on);
-                }
-                else {
+                } else {
                     preferences.setHeartbeatMonitorMessage(null);
                     findPreference(PreferenceManager.HEARTBEAT_MONITOR_MESSAGE).setSummary(R.string.hearbeat_message_summary);
                 }
@@ -583,7 +599,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         int hours = totalSecs / 3600;
         int minutes = (totalSecs % 3600) / 60;
         int seconds = totalSecs % 60;
-
 
         TimePickerDialog mTimePickerDialog = TimePickerDialog.newInstance(this, hours, minutes, seconds, true);
         mTimePickerDialog.enableSeconds(true);
@@ -633,22 +648,22 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                     getString(R.string.signal_registration_desc));
             sender.register(preferences.getVoiceVerificationEnabled(),
                     new SignalExecutorTask.TaskResult() {
-                @Override
-                public void onSuccess(@NonNull String msg) {
-                    if (isAdded() && getActivity() != null) {
-                        progressDialog.dismiss();
-                    }
-                    showRegistrationSuccessDialog();
-                }
+                        @Override
+                        public void onSuccess(@NonNull String msg) {
+                            if (isAdded() && getActivity() != null) {
+                                progressDialog.dismiss();
+                            }
+                            showRegistrationSuccessDialog();
+                        }
 
-                @Override
-                public void onFailure(@NonNull String msg) {
-                    if (isAdded() && getActivity() != null) {
-                        progressDialog.dismiss();
-                    }
-                    Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-                }
-            });
+                        @Override
+                        public void onFailure(@NonNull String msg) {
+                            if (isAdded() && getActivity() != null) {
+                                progressDialog.dismiss();
+                            }
+                            Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                        }
+                    });
         } else {
             ProgressDialog progressDialog = ProgressDialog.show(getContext(), getString(R.string.verifying_signal),
                     getString(R.string.verifying_signal_desc));
@@ -731,16 +746,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
     private void askForPermission(String permission, Integer requestCode) {
         if (mActivity != null && ContextCompat.checkSelfPermission(mActivity, permission) != PackageManager.PERMISSION_GRANTED) {
-
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(mActivity, permission)) {
 
                 //This is called if user has denied the permission before
                 //In this case I am just asking the permission again
                 ActivityCompat.requestPermissions(mActivity, new String[]{permission}, requestCode);
-
             } else {
-
                 ActivityCompat.requestPermissions(mActivity, new String[]{permission}, requestCode);
             }
         }
@@ -756,15 +768,14 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         }
     }
 
-    private void requestChangeBatteryOptimizations ()
-    {
+    private void requestChangeBatteryOptimizations () {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             Intent intent = new Intent();
             String packageName = getActivity().getPackageName();
             PowerManager pm = (PowerManager) getActivity().getSystemService(Context.POWER_SERVICE);
-            if (pm.isIgnoringBatteryOptimizations(packageName))
+            if (pm.isIgnoringBatteryOptimizations(packageName)) {
                 intent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
-            else {
+            } else {
                 intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
                 intent.setData(Uri.parse("package:" + packageName));
             }
